@@ -1,0 +1,44 @@
+Arguments: 
+  /opt/homebrew/Cellar/node@18/18.19.0/bin/node /Users/ting/.yarn/bin/yarn.js add hardhat
+
+PATH: 
+  /opt/homebrew/opt/node@18/bin:/opt/homebrew/opt/node@20/bin:/Users/ting/.yarn/bin:/Users/ting/.config/yarn/global/node_modules/.bin:/opt/homebrew/bin:/opt/homebrew/sbin:/Library/Frameworks/Python.framework/Versions/3.12/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/TeX/texbin:/opt/homebrew/opt/node@18/bin:/opt/homebrew/opt/node@20/bin:/Users/ting/.yarn/bin:/Users/ting/.config/yarn/global/node_modules/.bin:/opt/homebrew/bin:/opt/homebrew/sbin:/Library/Frameworks/Python.framework/Versions/3.12/bin:/Users/ting/.cargo/bin
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  18.19.0
+
+Platform: 
+  darwin arm64
+
+Trace: 
+  Error: https://registry.npmmirror.com/hardhat: tunneling socket could not be established, cause=connect ECONNREFUSED 127.0.0.1:10887
+      at ClientRequest.onError (/Users/ting/.yarn/lib/cli.js:152376:17)
+      at Object.onceWrapper (node:events:632:26)
+      at ClientRequest.emit (node:events:517:28)
+      at Socket.socketErrorListener (node:_http_client:501:9)
+      at Socket.emit (node:events:517:28)
+      at emitErrorNT (node:internal/streams/destroy:151:8)
+      at emitErrorCloseNT (node:internal/streams/destroy:116:3)
+      at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+
+npm manifest: 
+  {
+    "name": "mxc",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "ISC"
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
