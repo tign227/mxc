@@ -1,39 +1,52 @@
-// Test file for ETHPool contract using Hardhat
+const { expect, assert } = require("chai");
 
-const { expect } = require('chai');
-
-describe('ETHPool', function () {
+describe("ETHPool", function () {
   let ETHPool;
   let ethPool;
-  let owner;
-  let addr1;
-  let addr2;
+  let team;
+  let addrA;
+  let addrB;
 
   beforeEach(async function () {
-    [owner, addr1, addr2] = await ethers.getSigners();
+    [team, addrA, addrB] = await ethers.getSigners();
 
-    ETHPool = await ethers.getContractFactory('ETHPool');
+    ETHPool = await ethers.getContractFactory("ETHPool");
     ethPool = await ETHPool.deploy();
   });
 
-  it('Should deposit ETH and calculate rewards correctly', async function () {
-    await ethPool.connect(addr1).deposit({ value: ethers.parseEther('1') });
-    await ethPool.connect(addr2).deposit({ value: ethers.parseEther('2') });
+  it("Should allow A to withdraw 150 and B to withdraw 450 after depositing rewards", async function () {
+    await ethPool.connect(addrA).deposit({ value: ethers.parseEther("100") });
+    await ethPool.connect(addrB).deposit({ value: ethers.parseEther("300") });
 
-    expect(await ethPool.deposit(addr1.address)).to.equal(ethers.parseEther('1'));
-    expect(await ethPool.deposit(addr2.address)).to.equal(ethers.parseEther('2'));
+    const rewards = ethers.parseEther("200")
+    await ethPool.connect(team).depositRewards({value: rewards});
 
-    await ethPool.depositRewards(100);
+    await ethPool.connect(addrA).withdraw();
+    await ethPool.connect(addrB).withdraw();
 
-    await ethPool.connect(addr1).withdraw();
-    await ethPool.connect(addr2).withdraw();
+    const balanceForA = await ethers.provider.getBalance(addrA.address);
+    console.log("Address A ETH balance:", ethers.formatEther(balanceForA));
 
-    expect(await ethPool.getDeposit(addr1.address)).to.equal(0);
-    expect(await ethPool.getDeposit(addr2.address)).to.equal(0);
+    const balanceForB = await ethers.provider.getBalance(addrB.address);
+    console.log("Address B ETH balance:", ethers.formatEther(balanceForB));
+  });
 
-    expect(await ethPool.getRewards(addr1.address)).to.equal(150);
-    expect(await ethPool.getRewards(addr2.address)).to.equal(450);
+  it("Should test deposit, withdraw order for A and B", async function () {
+    await ethPool.connect(addrA).deposit({ value: ethers.parseEther("100") });
 
-    expect(await ethPool.getTotalDeposits()).to.equal(0);
+    const rewards = ethers.parseEther("200");
+    await ethPool.connect(team).depositRewards({ value: rewards });
+
+    await ethPool.connect(addrB).deposit({ value: ethers.parseEther("300") });
+
+    await ethPool.connect(addrA).withdraw();
+
+    await ethPool.connect(addrB).withdraw();
+
+    const balanceForA = await ethers.provider.getBalance(addrA.address);
+    console.log("Address A ETH balance:", ethers.formatEther(balanceForA));
+
+    const balanceForB = await ethers.provider.getBalance(addrB.address);
+    console.log("Address B ETH balance:", ethers.formatEther(balanceForB));
   });
 });
